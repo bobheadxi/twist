@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -10,7 +11,7 @@ import (
 )
 
 var (
-	outDir = flag.String("out", ".", "path to output directory")
+	outDir = flag.String("o", ".", "path to output directory")
 )
 
 type pkg struct {
@@ -34,7 +35,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	os.MkdirAll(*outDir, os.ModePerm)
 	target := filepath.Join(*outDir, "index.html")
+	fmt.Printf("generating template in '%s'\n", target)
 	os.Remove(target)
 	f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
