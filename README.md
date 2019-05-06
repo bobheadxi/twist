@@ -10,19 +10,19 @@ with a custom domain, for example:
 
 ```diff
 - import "github.com/bobheadxi/zapx"
-+ import "bobheadxi.dev/zapx"
++ import "go.bobheadxi.dev/zapx"
 ```
 
 ## usage
 
 ```sh
 go get github.com/bobheadxi/twist
-#     [        source         ] [   canonical    ]
-twist github.com/bobheadxi/zapx bobheadxi.dev/zapx
+#     [        source         ] [     canonical     ]
+twist github.com/bobheadxi/zapx go.bobheadxi.dev/zapx
 ```
 
 Using the example in this repo:
 
 ```sh
-twist -c twist.example.yml -o x
+twist -c twist.example.yml -o x -readme
 ```

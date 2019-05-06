@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	outDir  = flag.String("o", ".", "path to output directory")
-	cfgPath = flag.String("c", "./twist.yml", "path to Twist configuration")
+	outDir       = flag.String("o", ".", "path to output directory")
+	cfgPath      = flag.String("c", "./twist.yml", "path to Twist configuration")
+	renderREADME = flag.Bool("readme", false, "toggle README rendering - requires configuration")
 )
 
 type pkg struct {
@@ -44,6 +45,7 @@ func main() {
 	}
 
 	// otherwise generate
+	var cfg config
 	if *cfgPath == "" {
 		if len(flag.Args()) == 0 {
 			println("insufficient arguments provided")
@@ -55,13 +57,19 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		var cfg config
 		if err := yaml.Unmarshal(b, &cfg); err != nil {
 			panic(err)
 		}
 		for s, c := range cfg.Packages {
 			generate(s, c)
 		}
+	}
+
+	if *renderREADME {
+		if cfg.Packages == nil {
+			panic("no configuration found")
+		}
+		generateREADME(&cfg)
 	}
 }
 

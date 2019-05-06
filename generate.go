@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/bobheadxi/twist/internal"
+	"github.com/olekukonko/tablewriter"
 )
 
 func generate(source, canonical string) {
@@ -38,6 +39,32 @@ func generate(source, canonical string) {
 	}); err != nil {
 		panic(err)
 	}
+	f.Sync()
+	f.Close()
+}
+
+func generateREADME(cfg *config) {
+	// set up file
+	target := filepath.Join(*outDir, "README.md")
+	fmt.Printf("generating README in '%s'\n", target)
+	os.Remove(target)
+	f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	// render table
+	table := tablewriter.NewWriter(f)
+	table.SetHeader([]string{"Package", "Source"})
+	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
+	table.SetCenterSeparator("|")
+	for s, c := range cfg.Packages {
+		table.Append([]string{c, fmt.Sprintf("[%s](https://%s)", s, s)})
+	}
+	table.Render()
+	f.WriteString("\n---\n")
+	f.WriteString("\ngenerated using [twist](https://github.com/bobheadxi/twist)\n")
+
 	f.Sync()
 	f.Close()
 }
