@@ -26,3 +26,9 @@ Using the example in this repo:
 ```sh
 twist -c twist.example.yml -o x -readme
 ```
+
+To set up configuration:
+
+```sh
+twist config
+```
