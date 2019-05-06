@@ -16,7 +16,7 @@ with a custom domain, for example:
 ## usage
 
 ```sh
-go get github.com/bobheadxi/twist
+go get -u go.bobheadxi.dev/twist
 #     [        source         ] [     canonical     ]
 twist github.com/bobheadxi/zapx go.bobheadxi.dev/zapx
 ```

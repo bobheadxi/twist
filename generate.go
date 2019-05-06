@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bobheadxi/twist/internal"
+	"go.bobheadxi.dev/twist/internal"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -63,7 +63,7 @@ func generateREADME(cfg *config) {
 	}
 	table.Render()
 	f.WriteString("\n---\n")
-	f.WriteString("\ngenerated using [twist](https://github.com/bobheadxi/twist)\n")
+	f.WriteString("\ngenerated using [twist](https://go.bobheadxi.dev/twist)\n")
 
 	f.Sync()
 	f.Close()

@@ -89,5 +89,5 @@ other commands:
 flags:
 `)
 	flag.PrintDefaults()
-	println("\nsee https://github.com/bobheadxi/twist for more documentation.")
+	println("\nsee https://go.bobheadxi.dev/twist for more documentation.")
 }
