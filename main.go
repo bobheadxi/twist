@@ -40,8 +40,8 @@ func main() {
 			fmt.Printf("config generated in '%s'\n", *cfgPath)
 		default:
 			println("insufficient arguments provided")
-			os.Exit(1)
 		}
+		os.Exit(1)
 	}
 
 	// otherwise generate
