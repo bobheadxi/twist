@@ -82,7 +82,7 @@ func showHelp() {
 usage:
 
   twist -c twist.yml
-  twist [source] [canonical]
+  twist [source] [canonical] [subpackages...]
 
 other commands:
 
