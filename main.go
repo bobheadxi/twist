@@ -11,7 +11,7 @@ import (
 
 var (
 	outDir       = flag.String("o", ".", "path to output directory")
-	cfgPath      = flag.String("c", "./twist.yml", "path to Twist configuration")
+	cfgPath      = flag.String("c", "", "path to Twist configuration")
 	renderREADME = flag.Bool("readme", false, "toggle README rendering - requires configuration")
 )
 
@@ -30,6 +30,9 @@ func main() {
 		case "help":
 			showHelp()
 		case "config":
+			if *cfgPath == "" {
+				*cfgPath = "./twist.yml"
+			}
 			b, err := yaml.Marshal(newConfig())
 			if err != nil {
 				panic(err)
@@ -40,8 +43,8 @@ func main() {
 			fmt.Printf("config generated in '%s'\n", *cfgPath)
 		default:
 			println("insufficient arguments provided")
-			os.Exit(1)
 		}
+		os.Exit(1)
 	}
 
 	// otherwise generate
@@ -51,7 +54,7 @@ func main() {
 			println("insufficient arguments provided")
 			os.Exit(1)
 		}
-		generate(flag.Arg(0), flag.Arg(1))
+		generate(flag.Arg(0), canonical{Path: flag.Arg(1), Subpackages: flag.Args()[2:]})
 	} else {
 		b, err := ioutil.ReadFile(*cfgPath)
 		if err != nil {

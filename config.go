@@ -1,7 +1,19 @@
 package main
 
-type config struct {
-	Packages map[string]string
+type canonical struct {
+	Path        string
+	Subpackages []string
 }
 
-func newConfig() *config { return &config{Packages: make(map[string]string)} }
+type config struct {
+	Packages map[string]canonical
+}
+
+func newConfig() *config {
+	return &config{Packages: map[string]canonical{
+		"github.com/my/package": canonical{
+			Path:        "go.my.domain/package",
+			Subpackages: []string{"subpackage1", "subpackage2"},
+		},
+	}}
+}

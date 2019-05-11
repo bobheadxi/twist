@@ -17,8 +17,8 @@ with a custom domain, for example:
 
 ```sh
 go get -u go.bobheadxi.dev/twist
-#     [        source         ] [     canonical     ]
-twist github.com/bobheadxi/zapx go.bobheadxi.dev/zapx
+#          [        source         ] [     canonical     ]
+twist -o x github.com/bobheadxi/zapx go.bobheadxi.dev/zapx
 ```
 
 Using the example in this repo:
