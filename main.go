@@ -54,7 +54,7 @@ func main() {
 			println("insufficient arguments provided")
 			os.Exit(1)
 		}
-		generate(flag.Arg(0), flag.Arg(1))
+		generate(flag.Arg(0), canonical{Path: flag.Arg(1), Subpackages: flag.Args()[2:]})
 	} else {
 		b, err := ioutil.ReadFile(*cfgPath)
 		if err != nil {
@@ -82,7 +82,7 @@ func showHelp() {
 usage:
 
   twist -c twist.yml
-  twist [source] [canonical]
+  twist [source] [canonical] [subpackages...]
 
 other commands:
 

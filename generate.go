@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.bobheadxi.dev/twist/internal"
 	"github.com/olekukonko/tablewriter"
+	"go.bobheadxi.dev/twist/internal"
 )
 
-func generate(source, canonical string) {
+func generate(source string, canon canonical) {
 	b, err := internal.ReadFile("pkg.html")
 	if err != nil {
 		panic(err)
@@ -21,26 +21,32 @@ func generate(source, canonical string) {
 		panic(err)
 	}
 
-	parts := strings.Split(canonical, "/")
+	parts := strings.Split(canon.Path, "/")
 	packageName := parts[len(parts)-1]
-	target := filepath.Join(*outDir, packageName)
-	os.MkdirAll(target, os.ModePerm)
-	target = filepath.Join(target, "index.html")
-	fmt.Printf("generating template in '%s' (for '%s' => '%s')\n", target, source, canonical)
-	os.Remove(target)
-	f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
+	for _, p := range append(canon.Subpackages, "") {
+		var (
+			path    = filepath.Join(packageName, p)
+			pkgPath = filepath.Join(canon.Path, p)
+			target  = filepath.Join(*outDir, path)
+		)
+		os.MkdirAll(target, os.ModePerm)
+		output := filepath.Join(target, "index.html")
+		fmt.Printf("generating template in '%s' (for '%s' => '%s')\n", output, source, pkgPath)
+		os.Remove(output)
+		f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
 
-	if err := t.Execute(f, pkg{
-		Source:    source,
-		Canonical: canonical,
-	}); err != nil {
-		panic(err)
+		if err := t.Execute(f, pkg{
+			Source:    source,
+			Canonical: pkgPath,
+		}); err != nil {
+			panic(err)
+		}
+		f.Sync()
+		f.Close()
 	}
-	f.Sync()
-	f.Close()
 }
 
 func generateREADME(cfg *config) {
@@ -59,7 +65,7 @@ func generateREADME(cfg *config) {
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	for s, c := range cfg.Packages {
-		table.Append([]string{c, fmt.Sprintf("[%s](https://%s)", s, s)})
+		table.Append([]string{c.Path, fmt.Sprintf("[%s](https://%s)", s, s)})
 	}
 	table.Render()
 	f.WriteString("\n---\n")
