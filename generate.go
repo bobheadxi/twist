@@ -21,26 +21,23 @@ func generate(source string, canon canonical) {
 		panic(err)
 	}
 
-	parts := strings.Split(canon.Path, "/")
-	packageName := parts[len(parts)-1]
+	var (
+		parts       = strings.Split(canon.Path, "/")
+		packageName = parts[len(parts)-1]
+	)
 	for _, p := range append(canon.Subpackages, "") {
-		var (
-			path    = filepath.Join(packageName, p)
-			pkgPath = filepath.Join(canon.Path, p)
-			target  = filepath.Join(*outDir, path)
-		)
+		target := filepath.Join(*outDir, packageName, p)
 		os.MkdirAll(target, os.ModePerm)
 		output := filepath.Join(target, "index.html")
-		fmt.Printf("generating template in '%s' (for '%s' => '%s')\n", output, source, pkgPath)
+		fmt.Printf("generating template in '%s' (for '%s' => '%s')\n", output, source, canon.Path)
 		os.Remove(output)
 		f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 		if err != nil {
 			panic(err)
 		}
-
 		if err := t.Execute(f, pkg{
 			Source:    source,
-			Canonical: pkgPath,
+			Canonical: canon.Path,
 		}); err != nil {
 			panic(err)
 		}

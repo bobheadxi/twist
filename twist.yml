@@ -1,0 +1,6 @@
+packages:
+  github.com/my/package:
+    path: go.my.domain/package
+    subpackages:
+    - subpackage1
+    - subpackage2

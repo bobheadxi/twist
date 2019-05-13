@@ -29,6 +29,7 @@ func main() {
 		switch arg := flag.Arg(0); arg {
 		case "help":
 			showHelp()
+			os.Exit(0)
 		case "config":
 			if *cfgPath == "" {
 				*cfgPath = "./twist.yml"
@@ -41,10 +42,11 @@ func main() {
 				panic(err)
 			}
 			fmt.Printf("config generated in '%s'\n", *cfgPath)
+			os.Exit(0)
 		default:
 			println("insufficient arguments provided")
+			os.Exit(1)
 		}
-		os.Exit(1)
 	}
 
 	// otherwise generate
