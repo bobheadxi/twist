@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/olekukonko/tablewriter"
@@ -56,13 +57,22 @@ func generateREADME(cfg *config) {
 		panic(err)
 	}
 
+	// sort packages
+	keys := make([]string, len(cfg.Packages))
+	var i int
+	for s := range cfg.Packages {
+		keys[i] = s
+		i++
+	}
+	sort.Strings(keys)
+
 	// render table
 	table := tablewriter.NewWriter(f)
 	table.SetHeader([]string{"Package", "Source"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
-	for s, c := range cfg.Packages {
-		table.Append([]string{c.Path, fmt.Sprintf("[%s](https://%s)", s, s)})
+	for _, k := range keys {
+		table.Append([]string{cfg.Packages[k].Path, fmt.Sprintf("[%s](https://%s)", k, k)})
 	}
 	table.Render()
 	f.WriteString("\n---\n")
