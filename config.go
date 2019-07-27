@@ -11,7 +11,7 @@ type config struct {
 
 func newConfig() *config {
 	return &config{Packages: map[string]canonical{
-		"github.com/my/package": canonical{
+		"github.com/my/package": {
 			Path:        "go.my.domain/package",
 			Subpackages: []string{"subpackage1", "subpackage2"},
 		},
