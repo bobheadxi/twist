@@ -6,7 +6,8 @@ type canonical struct {
 }
 
 type config struct {
-	Packages map[string]canonical
+	GodocFromSource bool
+	Packages        map[string]canonical
 }
 
 func newConfig() *config {

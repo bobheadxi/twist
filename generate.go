@@ -68,11 +68,20 @@ func generateREADME(cfg *config) {
 
 	// render table
 	table := tablewriter.NewWriter(f)
-	table.SetHeader([]string{"Package", "Source"})
+	table.SetHeader([]string{"Package", "Godoc", "Source"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	for _, k := range keys {
-		table.Append([]string{cfg.Packages[k].Path, fmt.Sprintf("[%s](https://%s)", k, k)})
+		pkgPath := cfg.Packages[k].Path
+		godocSource := pkgPath
+		if cfg.GodocFromSource {
+			godocSource = k
+		}
+		table.Append([]string{
+			fmt.Sprintf("`%s`", pkgPath),
+			fmt.Sprintf("[![GoDoc](https://godoc.org/%s?status.svg)](https://godoc.org/%s)", godocSource, godocSource),
+			fmt.Sprintf("[%s](https://%s)", k, k),
+		})
 	}
 	table.Render()
 	f.WriteString("\n---\n")
