@@ -3,6 +3,7 @@ package main
 type canonical struct {
 	Path        string
 	Subpackages []string
+	NoREADME    bool
 }
 
 type config struct {

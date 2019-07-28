@@ -72,6 +72,9 @@ func generateREADME(cfg *config) {
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	for _, k := range keys {
+		if cfg.Packages[k].NoREADME {
+			continue
+		}
 		pkgPath := cfg.Packages[k].Path
 		godocSource := pkgPath
 		if cfg.GodocFromSource {
