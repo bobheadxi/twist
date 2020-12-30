@@ -76,13 +76,13 @@ func generateREADME(cfg *config) {
 			continue
 		}
 		pkgPath := cfg.Packages[k].Path
-		godocSource := pkgPath
+		docsSource := pkgPath
 		if cfg.GodocFromSource {
-			godocSource = k
+			docsSource = k
 		}
 		table.Append([]string{
 			fmt.Sprintf("`%s`", pkgPath),
-			fmt.Sprintf("[![godev](https://pkg.go.dev/badge/%s.svg)](https://pkg.go.dev/%s)", godocSource, godocSource),
+			fmt.Sprintf("[![Reference](https://pkg.go.dev/badge/%s.svg)](https://pkg.go.dev/%s)", docsSource, docsSource),
 			fmt.Sprintf("[%s](https://%s)", k, k),
 		})
 	}
